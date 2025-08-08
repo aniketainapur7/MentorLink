@@ -16,7 +16,7 @@ const SessionSchema = new mongoose.Schema({
     enum: ['requested', 'accepted', 'in-progress', 'completed', 'cancelled'], 
     default: 'requested' 
   },
-  roomId: { type: String, required: true, index: true }, // string room id used for Socket.IO / WebRTC
+  meetingurl : { type: String, required: true, index: true }, // string room id used for Socket.IO / WebRTC
   startTime: { type: Date },
   endTime: { type: Date },
   durationMinutes: { type: Number }, // optional, set when session completes

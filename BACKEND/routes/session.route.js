@@ -1,20 +1,14 @@
-const express = require("express");
-const { 
-    startSession, 
-    endSession, 
-    whiteboardSync, 
-    sendChatMessage, 
-    screenShare 
-} = require("../controller/session.controller.js");
-
-const verifyjwt = require("../middleware/auth.middleware.js");
-
+const express = require('express');
 const router = express.Router();
+const crypto = require('crypto');
 
-router.post("/:id/start", verifyjwt, startSession); 
-router.post("/:id/end", verifyjwt, endSession);
-router.post("/:id/whiteboard-sync", verifyjwt, whiteboardSync);
-router.post("/:id/chat", verifyjwt, sendChatMessage);
-router.post("/:id/screen-share", verifyjwt, screenShare);
+router.get('/create', (req, res) => {
+    // const { mentorName, studentName } = req.body;
+    const roomName = `session-${crypto.randomBytes(4).toString('hex')}`;
+
+    res.json({
+        meetingURL: `https://meet.jit.si/${roomName}`
+    });
+});
 
 module.exports = router;

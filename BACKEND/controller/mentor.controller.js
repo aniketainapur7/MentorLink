@@ -9,7 +9,8 @@ const getRequests = async (req, res) => {
     const requests = await Session.find({
       mentorId,
       status: "requested"
-    }).populate("studentId", "name email subjects profileImage");
+    })
+      .populate("studentId", "name email subjects profileImage");
 
     res.status(200).json({ data: requests });
   } catch (error) {
@@ -17,6 +18,7 @@ const getRequests = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 // accept request
 const acceptSession = async (req, res) => {
@@ -37,12 +39,17 @@ const acceptSession = async (req, res) => {
     session.startTime = new Date();
     await session.save();
 
-    res.status(200).json({ message: "Session accepted", session });
+    res.status(200).json({
+      message: "Session accepted",
+      meetingurl: session.meetingurl,
+      session
+    });
   } catch (error) {
     console.error("Error in acceptSession controller:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 // reject session request
 const rejectSession = async (req, res) => {

@@ -17,7 +17,7 @@ const signup = async (req, res) => {
       profileImage
     } = req.body;
 
-    // Basic validation
+   
     if (!role || !email || !password || !name) {
       return res.status(400).json({ 
         message: "Role, name, email, and password are mandatory" 
@@ -75,7 +75,8 @@ const signup = async (req, res) => {
       password, // Will be hashed by mongoose pre-save
       name,
       subjects,
-      bio: bio || ""
+      bio: bio || "",
+      availability 
     };
 
     // Add role-specific fields
