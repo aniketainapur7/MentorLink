@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, TrendingUp, Star, Users, Clock, ArrowRight } from 'lucide-react';
+import { Search, TrendingUp, Star, Users, Clock, ArrowRight, Link } from 'lucide-react';
+import { Link as RouterLink } from 'react-router-dom';
 
 const Hero: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -54,26 +55,26 @@ const Hero: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
           >
-            <motion.button
+            {/* <motion.button
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2"
             >
               <span>Find a Mentor</span>
               <ArrowRight className="w-5 h-5" />
-            </motion.button>
-            
-            <motion.button
+            </motion.button> */}
+
+            {/* <motion.button
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               className="border-2 border-purple-500 text-purple-600 dark:text-purple-400 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-300"
             >
               Become a Mentor
-            </motion.button>
+            </motion.button> */}
           </motion.div>
 
           {/* Search Bar */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -89,7 +90,17 @@ const Hero: React.FC = () => {
                 className="w-full pl-12 pr-4 py-4 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 text-lg"
               />
             </div>
-          </motion.div>
+          </motion.div> */}
+          <RouterLink to='/role-selection'>
+          <motion.button
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            // onClick={() => setCurrentPage('role-selection')}
+            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 mb-6"
+          >
+            Get Started Now
+          </motion.button>
+          </RouterLink>
 
           {/* Trending Subjects */}
           <motion.div
