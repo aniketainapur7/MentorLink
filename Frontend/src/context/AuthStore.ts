@@ -100,7 +100,7 @@ export const useAppStore = create<AppState & AppActions>()(
 
             logout: async () => {
                 try {
-                    await axiosInstance.post("/user/logout");
+                    await axiosInstance.get("/user/logout");
                     set({ user: null, isAuthenticated: false });
                     toast.success("Logged out successfully");
                 } catch (error: any) {
