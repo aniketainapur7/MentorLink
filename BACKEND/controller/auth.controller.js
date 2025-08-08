@@ -1,4 +1,4 @@
-const User = require("../models/User.model.js")
+const User = require("../models/User.model.js");
 const bcrypt = require("bcryptjs");
 const generatejwt = require("../utils/generatetoken.js"); // Same util you used
 const cloudinary = require("../utils/cloudinary.js"); // For optional profile image upload

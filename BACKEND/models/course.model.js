@@ -1,6 +1,5 @@
-// models/Course.js
-const mongoose = require('mongoose');
 
+const mongoose = require('mongoose');
 const LessonSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
   type: { type: String, enum: ['video', 'pdf', 'text'], required: true },
@@ -21,7 +20,7 @@ const CourseSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 }, { timestamps: true });
 
-// Helper to update rating
+
 CourseSchema.methods.addRating = function(newRating) {
   this.rating = ((this.rating * this.ratingCount) + newRating) / (this.ratingCount + 1);
   this.ratingCount += 1;
