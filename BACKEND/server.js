@@ -16,14 +16,15 @@ dbconnect();
 app.use(cookie());
 app.use(express.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  const time = new Date().toLocaleString(); 
-  console.log(`[${time}] ${req.method} ${req.originalUrl}`);
-  next();
-});
+const logrequest = require("./middleware/logrequest.js");
 
 const User = require("./routes/auth.route.js");
-app.use("/api/user" , User);
+app.use("/api/user",logrequest, User);
+
+const mentor = require("./routes/mentor.route.js");
+app.use("/api/mentor",logrequest, mentor);
+
+
 
 const port = process.env.PORT
 app.listen(port,'0.0.0.0', ()=>{
