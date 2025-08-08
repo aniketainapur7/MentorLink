@@ -124,22 +124,22 @@
 // export default App;
 
 
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useParams } from 'react-router-dom';
-import { AppProvider, useApp } from './context/AppContext';
-import Navbar from './components/Navbar';
-import Loading from './components/Loading';
-import Hero from './components/Hero';
-import RoleSelection from './components/RoleSelection';
-import AuthForm from './components/AuthForm';
-import StudentDashboard from './components/StudentDashboard';
-import MentorDashboard from './components/MentorDashboard';
-import QuickConnect from './components/QuickConnect';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useParams } from "react-router-dom";
+import { useAppStore } from "./context/AuthStore";
+import Navbar from "./components/Navbar";
+import Loading from "./components/Loading";
+import Hero from "./components/Hero";
+import RoleSelection from "./components/RoleSelection";
+import AuthForm from "./components/AuthForm";
+import StudentDashboard from "./components/StudentDashboard";
+import MentorDashboard from "./components/MentorDashboard";
+import QuickConnect from "./components/QuickConnect";
 
 // Wrapper so RoleSelection gets the right props
 function RoleSelectionWrapper() {
   const navigate = useNavigate();
 
-  const handleRoleSelect = (role : string | undefined) => {
+  const handleRoleSelect = (role: string | undefined) => {
     navigate(`/auth/${role}`);
   };
 
@@ -152,22 +152,22 @@ function AuthFormWrapper() {
   const { role } = useParams(); // 'student' or 'mentor'
 
   const handleBack = () => {
-    navigate('/role-selection');
+    navigate("/role-selection");
   };
 
   return <AuthForm role={role} onBack={handleBack} />;
 }
 
 function AppRoutes() {
-  const { state } = useApp();
+  const { isAuthenticated, loading, user } = useAppStore();
 
-  if (state.loading) return <Loading />;
+  if (loading) return <Loading />;
 
   return (
     <>
       <Navbar />
       <Routes>
-        {!state.isAuthenticated ? (
+        {!isAuthenticated ? (
           <>
             <Route path="/" element={<Hero />} />
             <Route path="/role-selection" element={<RoleSelectionWrapper />} />
@@ -176,7 +176,7 @@ function AppRoutes() {
           </>
         ) : (
           <>
-            {state.user?.role === 'student' ? (
+            {user?.role === "student" ? (
               <Route path="/dashboard" element={<StudentDashboard />} />
             ) : (
               <Route path="/dashboard" element={<MentorDashboard />} />
@@ -192,10 +192,8 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <AppProvider>
-      <Router>
-        <AppRoutes />
-      </Router>
-    </AppProvider>
+    <Router>
+      <AppRoutes />
+    </Router>
   );
 }

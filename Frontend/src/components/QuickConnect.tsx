@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, X, Users, Clock, Star } from 'lucide-react';
-import { useApp } from '../context/AppContext';
+import { useAppStore } from '../context/AuthStore';
 
 const QuickConnect: React.FC = () => {
-  const { state } = useApp();
+  const state = useAppStore.getState();
   const [isOpen, setIsOpen] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   

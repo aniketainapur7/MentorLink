@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Menu, X, Sun, Moon, Bell, User, LogOut } from 'lucide-react';
-import { useApp } from '../context/AppContext';
+import { useAppStore } from '../context/AuthStore';
 
 const Navbar: React.FC = () => {
-  const { state, dispatch } = useApp();
+  const state = useAppStore.getState();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const {logout,toggleTheme} = useAppStore()
   const handleLogout = () => {
-    dispatch({ type: 'LOGOUT' });
+    
+    logout();
   };
-
   return (
     <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => dispatch({ type: 'TOGGLE_THEME' })}
+                  onClick={() => toggleTheme()}
                   className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 >
                   {state.theme === 'light' ? (
@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => dispatch({ type: 'TOGGLE_THEME' })}
+                  onClick={() => toggleTheme()}
                   className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 >
                   {state.theme === 'light' ? (

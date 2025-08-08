@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, User, Github } from 'lucide-react';
-import { useApp } from '../context/AppContext';
+import { useAppStore } from '../context/AuthStore';
+import toast from 'react-hot-toast';
+import { sign } from 'crypto';
+import { sub } from 'framer-motion/client';
+
 
 interface AuthFormProps {
   role: string | undefined;
@@ -9,33 +13,33 @@ interface AuthFormProps {
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({ role, onBack }) => {
-  const { dispatch } = useApp();
+  const {setUser,login,signup} = useAppStore();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    subjects: [],
+    availability: '',
+    bio: '',
+    profileImage: null
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if(!isLogin) {
+      if(formData.password !== formData.confirmPassword){
+      toast.error("Passwords do not match");
+      return;
+      }
+      signup({name: formData.name, email: formData.email, password: formData.password, role, subjects: formData.subjects , availability: formData.availability, bio: formData.bio, profileImage: formData.profileImage});
+      return;
+    }else{
+      login({email: formData.email, password: formData.password});
+    }
     
-    // Mock authentication - in real app, this would make API calls
-    const mockUser = {
-      id: '1',
-      name: formData.name || 'John Doe',
-      email: formData.email,
-      role,
-      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${formData.email}`,
-      bio: role === 'mentor' ? 'Experienced educator passionate about helping students succeed' : 'Eager learner looking to improve my skills',
-      subjects: role === 'mentor' ? ['Mathematics', 'Physics', 'Computer Science'] : ['Mathematics', 'Biology'],
-      rating: role === 'mentor' ? 4.8 : undefined,
-      hourlyRate: role === 'mentor' ? 25 : undefined,
-    };
-
-    dispatch({ type: 'SET_USER', payload: mockUser });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,6 +102,38 @@ const AuthForm: React.FC<AuthFormProps> = ({ role, onBack }) => {
                 animate={{ opacity: 1, height: 'auto' }}
                 transition={{ duration: 0.3 }}
               >
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Full Name
+                </label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required={!isLogin}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Full Name
+                </label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required={!isLogin}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Full Name
                 </label>
