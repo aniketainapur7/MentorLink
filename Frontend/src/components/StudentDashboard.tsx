@@ -56,7 +56,6 @@ const StudentDashboard: React.FC = () => {
       rating: 4.7,
       reviews: 73,
       hourlyRate: 25,
-      hourlyRate: 30,
       subjects: ['English', 'Literature'],
       bio: 'Masters in English Literature. Specializes in essay writing and literary analysis.',
       availability: 'Available tomorrow',

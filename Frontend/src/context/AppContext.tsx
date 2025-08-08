@@ -4,7 +4,7 @@ interface User {
   id: string;
   name: string;
   email: string;
-  role: 'student' | 'mentor';
+  role: string | undefined;
   avatar?: string;
   bio?: string;
   subjects?: string[];
@@ -18,6 +18,7 @@ interface AppState {
   theme: 'light' | 'dark';
   notifications: number;
   quickConnectAvailable: boolean;
+  loading: boolean;
 }
 
 type AppAction =
@@ -33,6 +34,7 @@ const initialState: AppState = {
   theme: 'light',
   notifications: 0,
   quickConnectAvailable: true,
+  loading: false,
 };
 
 const AppContext = createContext<{

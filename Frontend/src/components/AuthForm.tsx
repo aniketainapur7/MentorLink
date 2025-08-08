@@ -4,7 +4,7 @@ import { Eye, EyeOff, Mail, Lock, User, Github } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 interface AuthFormProps {
-  role: 'student' | 'mentor';
+  role: string | undefined;
   onBack: () => void;
 }
 
@@ -84,7 +84,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ role, onBack }) => {
               )}
             </div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              {isLogin ? 'Welcome Back' : `Create ${config.title}`}
+              {isLogin ? `Welcome Back ${role?.replace('m','M').replace('s','S')}` : `Create ${config.title}`}
             </h2>
             <p className="text-gray-600 dark:text-gray-300">
               {isLogin ? 'Sign in to continue' : config.subtitle}
