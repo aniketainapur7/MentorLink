@@ -75,7 +75,8 @@ const signup = async (req, res) => {
       password, // Will be hashed by mongoose pre-save
       name,
       subjects,
-      bio: bio || ""
+      bio: bio || "",
+      availability 
     };
 
     // Add role-specific fields

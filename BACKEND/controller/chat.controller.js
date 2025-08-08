@@ -35,7 +35,7 @@ const sendMessage = async (req, res) => {
 
 const getConversation = async (req, res) => {
     try {
-        const { userId } = req.params; // the other person
+        const { userId } = req.params; 
         const currentUserId = req.user._id;
 
         const messages = await ChatMessage.fetchConversation(currentUserId, userId, 50);
@@ -46,7 +46,7 @@ const getConversation = async (req, res) => {
     }
 };
 
-// Mark all messages from a user as read
+
 const markAsRead = async (req, res) => {
     try {
         const { userId } = req.params;
