@@ -42,7 +42,7 @@ export const useStudentSessionStore = create<StudentSessionState & StudentSessio
                 set({ isFetching: true });
                 try {
                     const res = await axiosInstance.get("/student/sessions");
-                    const allSessions: StudentSession[] = res.data.data || [];
+                    const allSessions: StudentSession[] = res.data.sessions || [];
                     console.log(allSessions)
                     set({
                         studentSessions: allSessions,

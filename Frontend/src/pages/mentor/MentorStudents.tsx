@@ -1,73 +1,52 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Search, Star, MessageCircle, Calendar, User, Filter } from "lucide-react"
+import axiosInstance from "../../utils/axios"
 
 const MentorStudents: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("")
   const [filterStatus, setFilterStatus] = useState("all")
+  const [students, setStudents] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const students = [
-    {
-      id: 1,
-      name: "Alice Johnson",
-      email: "alice@example.com",
-      subject: "Mathematics",
-      totalSessions: 12,
-      upcomingSessions: 2,
-      lastSession: "2024-01-10",
-      rating: 5,
-      status: "active",
-      image: "/placeholder.svg?height=60&width=60",
-    },
-    {
-      id: 2,
-      name: "Bob Smith",
-      email: "bob@example.com",
-      subject: "Physics",
-      totalSessions: 8,
-      upcomingSessions: 1,
-      lastSession: "2024-01-08",
-      rating: 4,
-      status: "active",
-      image: "/placeholder.svg?height=60&width=60",
-    },
-    {
-      id: 3,
-      name: "Carol Davis",
-      email: "carol@example.com",
-      subject: "Chemistry",
-      totalSessions: 15,
-      upcomingSessions: 0,
-      lastSession: "2024-01-05",
-      rating: 5,
-      status: "inactive",
-      image: "/placeholder.svg?height=60&width=60",
-    },
-    {
-      id: 4,
-      name: "David Wilson",
-      email: "david@example.com",
-      subject: "Biology",
-      totalSessions: 6,
-      upcomingSessions: 3,
-      lastSession: "2024-01-12",
-      rating: 4,
-      status: "active",
-      image: "/placeholder.svg?height=60&width=60",
-    },
-  ]
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        setLoading(true)
+        const res = await axiosInstance.get("/mentor/mystudents")
+        setStudents(res.data.students || [])
+      } catch (err: any) {
+        console.error("Failed to fetch students:", err)
+        setError("Unable to load students. Please try again later.")
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchStudents()
+  }, [])
 
   const filteredStudents = students.filter((student) => {
     const matchesSearch =
-      student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      student.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      student.email.toLowerCase().includes(searchQuery.toLowerCase())
+      student.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student.subject?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student.email?.toLowerCase().includes(searchQuery.toLowerCase())
+
     const matchesStatus = filterStatus === "all" || student.status === filterStatus
+
     return matchesSearch && matchesStatus
   })
+
+  if (loading) {
+    return <p className="text-gray-500 dark:text-gray-400">Loading students...</p>
+  }
+
+  if (error) {
+    return <p className="text-red-500">{error}</p>
+  }
 
   return (
     <div className="space-y-6">

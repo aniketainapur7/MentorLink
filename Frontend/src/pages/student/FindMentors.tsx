@@ -1,74 +1,80 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Search, Star, Filter, MapPin, Clock, DollarSign } from "lucide-react"
+import { useMentorStore } from "../../stores/mentorStore"
 
 const FindMentors: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedSubject, setSelectedSubject] = useState("all")
+  const {fetchMentors,mentors} = useMentorStore()
 
-  const mentors = [
-    {
-      id: 1,
-      name: "Dr. Sarah Johnson",
-      subject: "Mathematics",
-      rating: 4.9,
-      reviews: 127,
-      hourlyRate: 45,
-      location: "New York, NY",
-      availability: "Available now",
-      image: "/placeholder.svg?height=80&width=80",
-      specialties: ["Calculus", "Algebra", "Statistics"],
-    },
-    {
-      id: 2,
-      name: "Prof. Mike Chen",
-      subject: "Physics",
-      rating: 4.8,
-      reviews: 89,
-      hourlyRate: 50,
-      location: "San Francisco, CA",
-      availability: "Available in 2 hours",
-      image: "/placeholder.svg?height=80&width=80",
-      specialties: ["Quantum Physics", "Mechanics", "Thermodynamics"],
-    },
-    {
-      id: 3,
-      name: "Dr. Emily Davis",
-      subject: "Chemistry",
-      rating: 4.7,
-      reviews: 156,
-      hourlyRate: 40,
-      location: "Boston, MA",
-      availability: "Available tomorrow",
-      image: "/placeholder.svg?height=80&width=80",
-      specialties: ["Organic Chemistry", "Biochemistry", "Lab Techniques"],
-    },
-    {
-      id: 4,
-      name: "Dr. John Smith",
-      subject: "Biology",
-      rating: 4.9,
-      reviews: 203,
-      hourlyRate: 42,
-      location: "Chicago, IL",
-      availability: "Available now",
-      image: "/placeholder.svg?height=80&width=80",
-      specialties: ["Molecular Biology", "Genetics", "Cell Biology"],
-    },
-  ]
+  useEffect(()=>{
+    fetchMentors();
+  },[fetchMentors])
+
+  // const mentors = [
+  //   {
+  //     id: 1,
+  //     name: "Dr. Sarah Johnson",
+  //     subject: "Mathematics",
+  //     rating: 4.9,
+  //     reviews: 127,
+  //     hourlyRate: 45,
+  //     location: "New York, NY",
+  //     availability: "Available now",
+  //     image: "/placeholder.svg?height=80&width=80",
+  //     specialties: ["Calculus", "Algebra", "Statistics"],
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Prof. Mike Chen",
+  //     subject: "Physics",
+  //     rating: 4.8,
+  //     reviews: 89,
+  //     hourlyRate: 50,
+  //     location: "San Francisco, CA",
+  //     availability: "Available in 2 hours",
+  //     image: "/placeholder.svg?height=80&width=80",
+  //     specialties: ["Quantum Physics", "Mechanics", "Thermodynamics"],
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Dr. Emily Davis",
+  //     subject: "Chemistry",
+  //     rating: 4.7,
+  //     reviews: 156,
+  //     hourlyRate: 40,
+  //     location: "Boston, MA",
+  //     availability: "Available tomorrow",
+  //     image: "/placeholder.svg?height=80&width=80",
+  //     specialties: ["Organic Chemistry", "Biochemistry", "Lab Techniques"],
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Dr. John Smith",
+  //     subject: "Biology",
+  //     rating: 4.9,
+  //     reviews: 203,
+  //     hourlyRate: 42,
+  //     location: "Chicago, IL",
+  //     availability: "Available now",
+  //     image: "/placeholder.svg?height=80&width=80",
+  //     specialties: ["Molecular Biology", "Genetics", "Cell Biology"],
+  //   },
+  // ]
 
   const subjects = ["all", "Mathematics", "Physics", "Chemistry", "Biology", "Computer Science", "English"]
 
   const filteredMentors = mentors.filter((mentor) => {
-    const matchesSearch =
-      mentor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      mentor.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      mentor.specialties.some((specialty) => specialty.toLowerCase().includes(searchQuery.toLowerCase()))
-    const matchesSubject = selectedSubject === "all" || mentor.subject === selectedSubject
-    return matchesSearch && matchesSubject
+    // const matchesSearch =
+    //   mentor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    //   mentor.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    //   mentor.specialties.some((specialty) => specialty.toLowerCase().includes(searchQuery.toLowerCase()))
+    // const matchesSubject = selectedSubject === "all" || mentor.subject === selectedSubject
+    // return matchesSearch && matchesSubject
   })
 
   return (
@@ -116,7 +122,7 @@ const FindMentors: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {filteredMentors.map((mentor, index) => (
           <motion.div
-            key={mentor.id}
+            key={mentor._id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
@@ -124,7 +130,7 @@ const FindMentors: React.FC = () => {
           >
             <div className="flex items-start gap-4">
               <img
-                src={mentor.image || "/placeholder.svg"}
+                src={mentor.avatar || "/placeholder.svg"}
                 alt={mentor.name}
                 className="w-16 h-16 lg:w-20 lg:h-20 rounded-full object-cover"
               />
@@ -186,11 +192,11 @@ const FindMentors: React.FC = () => {
         ))}
       </div>
 
-      {filteredMentors.length === 0 && (
+      {/* {filteredMentors.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-500 dark:text-gray-400">No mentors found matching your criteria.</p>
         </div>
-      )}
+      )} */}
     </div>
   )
 }

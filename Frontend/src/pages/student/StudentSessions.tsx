@@ -4,9 +4,11 @@ import type React from "react"
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Calendar, Clock, Video, MessageCircle, Star } from "lucide-react"
+import { useStudentSessionStore } from "../../stores/studentSessionStore"
 
 const StudentSessions: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("upcoming")
+  const [activeTab, setActiveTab] = useState("upcoming");
+  const {studentSessions , acceptedSessions, completedSessions} = useStudentSessionStore();
 
   const upcomingSessions = [
     {
@@ -91,9 +93,9 @@ const StudentSessions: React.FC = () => {
       {/* Sessions List */}
       <div className="space-y-4">
         {activeTab === "upcoming" &&
-          upcomingSessions.map((session, index) => (
+          acceptedSessions.map((session, index) => (
             <motion.div
-              key={session.id}
+              key={session._id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
@@ -101,8 +103,8 @@ const StudentSessions: React.FC = () => {
             >
               <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-4 gap-3">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{session.topic}</h3>
-                  <p className="text-blue-600 dark:text-blue-400 font-medium">{session.mentor}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{session.subject}</h3>
+                  <p className="text-blue-600 dark:text-blue-400 font-medium">{session.mentorId.name}</p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{session.subject}</p>
                 </div>
                 <span
@@ -119,16 +121,16 @@ const StudentSessions: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-4 text-sm text-gray-600 dark:text-gray-400">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
-                  <span>{session.date}</span>
+                  <span>{session.startTime}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
-                  <span>{session.time}</span>
+                  <span>{session.startTime}</span>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3">
-                {session.meetingLink && (
+                {session.meetingurl && (
                   <button className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
                     <Video className="w-4 h-4" />
                     Join Session
@@ -146,9 +148,9 @@ const StudentSessions: React.FC = () => {
           ))}
 
         {activeTab === "past" &&
-          pastSessions.map((session, index) => (
+          completedSessions.map((session, index) => (
             <motion.div
-              key={session.id}
+              key={session._id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
@@ -156,8 +158,8 @@ const StudentSessions: React.FC = () => {
             >
               <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-4 gap-3">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{session.topic}</h3>
-                  <p className="text-blue-600 dark:text-blue-400 font-medium">{session.mentor}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{session.subject}</h3>
+                  <p className="text-blue-600 dark:text-blue-400 font-medium">{session.mentorId.name}</p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{session.subject}</p>
                 </div>
                 <div className="flex items-center gap-1">
@@ -173,11 +175,11 @@ const StudentSessions: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-4 text-sm text-gray-600 dark:text-gray-400">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
-                  <span>{session.date}</span>
+                  <span>{session.startTime}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
-                  <span>{session.time}</span>
+                  <span>{session.startTime}</span>
                 </div>
               </div>
 
