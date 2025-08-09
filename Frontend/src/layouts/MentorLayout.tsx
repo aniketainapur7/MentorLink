@@ -41,10 +41,10 @@ const MentorLayout: React.FC = () => {
         { icon: Calendar, label: "Schedule", path: "/mentor/schedule" },
         { icon: MessageCircle, label: "Messages", path: "/mentor/messages" },
         { icon: Clock, label: "My Sessions", path: "/mentor/history" },
-        { icon: BarChart3, label: "Analytics", path: "/mentor/analytics" },
-        { icon: DollarSign, label: "Earnings", path: "/mentor/earnings" },
-        { icon: User, label: "Profile", path: "/mentor/profile" },
-        { icon: Settings, label: "Settings", path: "/mentor/settings" },
+        // { icon: BarChart3, label: "Analytics", path: "/mentor/analytics" },
+        // { icon: DollarSign, label: "Earnings", path: "/mentor/earnings" },
+        // { icon: User, label: "Profile", path: "/mentor/profile" },
+        // { icon: Settings, label: "Settings", path: "/mentor/settings" },
     ]
 
     // Close sidebar on mobile when route changes
