@@ -141,6 +141,14 @@ import FindMentors from "./pages/student/FindMentors";
 import StudentSessions from "./pages/student/StudentSessions";
 import MentorStudents from "./pages/mentor/MentorStudents";
 import { useEffect } from "react";
+import MentorSessions from "./pages/mentor/MentorSessions";
+import MentorMessages from "./pages/mentor/MentorMessages";
+import StudentMessages from "./pages/student/StudentMessages";
+import StudentMaterials from "./pages/student/StudentMaterials";
+import StudentReviews from "./pages/student/StudentReviews";
+import StudentProfile from "./pages/student/StudentProfile";
+import StudentSettings from "./pages/student/StudentSettings";
+import MentorSchedule from "./pages/mentor/MentorSchedule";
 
 
 // Wrapper so RoleSelection gets the right props
@@ -167,55 +175,8 @@ function AuthFormWrapper() {
 }
 
 // Placeholder components for other pages
-const StudentMessages = () => (
-  <div className="p-6">
-    <h2 className="text-2xl font-bold">Student Messages</h2>
-    <p>Messages functionality coming soon...</p>
-  </div>
-)
-const StudentMaterials = () => (
-  <div className="p-6">
-    <h2 className="text-2xl font-bold">Study Materials</h2>
-    <p>Study materials functionality coming soon...</p>
-  </div>
-)
-const StudentReviews = () => (
-  <div className="p-6">
-    <h2 className="text-2xl font-bold">Reviews</h2>
-    <p>Reviews functionality coming soon...</p>
-  </div>
-)
-const StudentProfile = () => (
-  <div className="p-6">
-    <h2 className="text-2xl font-bold">Student Profile</h2>
-    <p>Profile settings coming soon...</p>
-  </div>
-)
-const StudentSettings = () => (
-  <div className="p-6">
-    <h2 className="text-2xl font-bold">Settings</h2>
-    <p>Settings functionality coming soon...</p>
-  </div>
-)
 
-const MentorSchedule = () => (
-  <div className="p-6">
-    <h2 className="text-2xl font-bold">Schedule</h2>
-    <p>Schedule management coming soon...</p>
-  </div>
-)
-const MentorMessages = () => (
-  <div className="p-6">
-    <h2 className="text-2xl font-bold">Mentor Messages</h2>
-    <p>Messages functionality coming soon...</p>
-  </div>
-)
-const MentorHistory = () => (
-  <div className="p-6">
-    <h2 className="text-2xl font-bold">Session History</h2>
-    <p>Session history coming soon...</p>
-  </div>
-)
+
 const MentorAnalytics = () => (
   <div className="p-6">
     <h2 className="text-2xl font-bold">Analytics</h2>
@@ -291,7 +252,7 @@ const App: React.FC = () => {
                   <Route path="students" element={<MentorStudents />} />
                   <Route path="schedule" element={<MentorSchedule />} />
                   <Route path="messages" element={<MentorMessages />} />
-                  <Route path="history" element={<MentorHistory />} />
+                  <Route path="history" element={<MentorSessions />} />
                   <Route path="analytics" element={<MentorAnalytics />} />
                   <Route path="earnings" element={<MentorEarnings />} />
                   <Route path="profile" element={<MentorProfile />} />

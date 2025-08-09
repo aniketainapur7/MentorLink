@@ -40,7 +40,7 @@ const MentorLayout: React.FC = () => {
         { icon: Users, label: "My Students", path: "/mentor/students" },
         { icon: Calendar, label: "Schedule", path: "/mentor/schedule" },
         { icon: MessageCircle, label: "Messages", path: "/mentor/messages" },
-        { icon: Clock, label: "Session History", path: "/mentor/history" },
+        { icon: Clock, label: "My Sessions", path: "/mentor/history" },
         { icon: BarChart3, label: "Analytics", path: "/mentor/analytics" },
         { icon: DollarSign, label: "Earnings", path: "/mentor/earnings" },
         { icon: User, label: "Profile", path: "/mentor/profile" },

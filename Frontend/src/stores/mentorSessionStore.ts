@@ -63,19 +63,19 @@ export const useMentorSessionStore = create<MentorSessionState & MentorSessionAc
             },
 
             updateSessionStatus: async (sessionId, status) => {
-                try {
-                    const res = await axiosInstance.put(`/mentor/sessions/${sessionId}`, { status });
-                    set({
-                        mentorSessions: get().mentorSessions.map((session) =>
-                            session._id === sessionId
-                                ? { ...session, status: res.data.status }
-                                : session
-                        ),
-                    });
-                    toast.success(`Session ${status} successfully`);
-                } catch (error: any) {
-                    toast.error(error?.response?.data?.message || "Failed to update session");
-                }
+                // try {
+                //     // const res = await axiosInstance.put(`/mentor/sessions/${sessionId}`, { status });
+                //     set({
+                //         mentorSessions: get().mentorSessions.map((session) =>
+                //             session._id === sessionId
+                //                 ? { ...session, status: res.data.status }
+                //                 : session
+                //         ),
+                //     });
+                //     toast.success(`Session ${status} successfully`);
+                // } catch (error: any) {
+                //     toast.error(error?.response?.data?.message || "Failed to update session");
+                // }
             },
 
             acceptRequest: async (requestId) => {

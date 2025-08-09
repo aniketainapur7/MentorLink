@@ -80,10 +80,10 @@ const FindMentors: React.FC = () => {
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-        <div className="flex flex-col lg:flex-row gap-4">
+      <div className="bg-white dark:bg-gray-800 p-4 lg:p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="flex flex-col gap-4">
           {/* Search Bar */}
-          <div className="flex-1 relative">
+          <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
@@ -100,7 +100,7 @@ const FindMentors: React.FC = () => {
             <select
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
-              className="px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               {subjects.map((subject) => (
                 <option key={subject} value={subject}>
@@ -113,28 +113,28 @@ const FindMentors: React.FC = () => {
       </div>
 
       {/* Mentors Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {filteredMentors.map((mentor, index) => (
           <motion.div
             key={mentor.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
+            className="bg-white dark:bg-gray-800 p-4 lg:p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
           >
             <div className="flex items-start gap-4">
               <img
                 src={mentor.image || "/placeholder.svg"}
                 alt={mentor.name}
-                className="w-20 h-20 rounded-full object-cover"
+                className="w-16 h-16 lg:w-20 lg:h-20 rounded-full object-cover"
               />
-              <div className="flex-1">
-                <div className="flex items-start justify-between mb-2">
-                  <div>
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-2 gap-2">
+                  <div className="flex-1 min-w-0">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{mentor.name}</h3>
                     <p className="text-blue-600 dark:text-blue-400 font-medium">{mentor.subject}</p>
                   </div>
-                  <div className="text-right">
+                  <div className="flex sm:flex-col items-start sm:items-end gap-2">
                     <div className="flex items-center gap-1">
                       <Star className="w-4 h-4 text-yellow-400 fill-current" />
                       <span className="text-sm font-medium">{mentor.rating}</span>
@@ -172,11 +172,11 @@ const FindMentors: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex gap-2">
-                  <button className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <button className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
                     Book Session
                   </button>
-                  <button className="px-4 py-2 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                  <button className="flex-1 sm:flex-none px-4 py-2 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm">
                     View Profile
                   </button>
                 </div>

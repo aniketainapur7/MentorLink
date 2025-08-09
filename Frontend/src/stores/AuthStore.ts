@@ -77,6 +77,11 @@ export const useAppStore = create<AppState & AppActions>()(
                     const res = await axiosInstance.post("/user/signup", data);
                     set({ user: res.data.user, isAuthenticated: true });
                     toast.success("Account created successfully");
+                    if (res.data.user.role === "student") {
+                        window.location.href = "/student/dashboard";
+                    } else if (res.data.user.role === "mentor") {
+                        window.location.href = "/mentor/dashboard";
+                    }
                     return true;
                 } catch (error: any) {
                     toast.error(error?.response?.data?.message || "Signup failed");
