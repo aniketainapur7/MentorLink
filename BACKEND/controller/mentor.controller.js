@@ -146,14 +146,13 @@ const updateExpertise = async (req, res) => {
 };
 const getmystudents = async (req, res) => {
   try {
-    const mentorId = req.user._id; // mentor from auth middleware
-
-    // Find all sessions where the logged-in user is the mentor
+    const mentorId = req.user._id; 
+    
     const sessions = await Session.find({ mentorId })
-      .populate('studentId', 'name, email subjects bio profileImage') // populate only needed fields
+      .populate('studentId', 'name email subjects bio profileImage')
       .exec();
 
-    // Extract unique students
+ 
     const uniqueStudentsMap = new Map();
     sessions.forEach(session => {
       if (session.studentId) {
@@ -161,22 +160,19 @@ const getmystudents = async (req, res) => {
       }
     });
 
-    const uniqueStudents = Array.from(uniqueStudentsMap.values());
+    const students = Array.from(uniqueStudentsMap.values());
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      count: uniqueStudents.length,
-      students: uniqueStudents
+      count: students.length,
+      students
     });
-
-  } catch (err) {
-    console.error('Error fetching students:', err);
-    return res.status(500).json({
-      success: false,
-      message: 'Server error while fetching students'
-    });
+  } catch (error) {
+    console.error("Error in getmystudents:", error.message);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
 
 module.exports = {
   getRequests,
