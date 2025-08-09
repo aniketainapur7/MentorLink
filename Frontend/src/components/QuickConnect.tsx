@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, X, Users, Clock, Star } from 'lucide-react';
-import { useAppStore } from '../context/AuthStore';
+import { useAppStore } from '../stores/AuthStore';
 
 const QuickConnect: React.FC = () => {
   const state = useAppStore.getState();

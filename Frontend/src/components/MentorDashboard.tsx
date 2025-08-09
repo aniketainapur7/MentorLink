@@ -1,48 +1,57 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, X, Calendar, DollarSign, Star, Clock, MessageCircle, TrendingUp, Users, Award, Settings } from 'lucide-react';
+import { Check, X, Calendar, DollarSign, Star, Clock, MessageCircle, TrendingUp, Users, Award, Settings, VideoIcon } from 'lucide-react';
+import { useMentorSessionStore } from '../stores/mentorSessionStore';
 
 const MentorDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('requests');
+  const { helpRequests, fetchMentorRequests, fetchMentorSessions, mentorSessions, updateSessionStatus, isFetching, acceptRequest,declineRequest, acceptedSessions} = useMentorSessionStore();
 
-  const helpRequests = [
-    {
-      id: 1,
-      student: 'Alex Thompson',
-      avatar: 'https://images.pexels.com/photos/1542085/pexels-photo-1542085.jpeg?auto=compress&cs=tinysrgb&w=100',
-      subject: 'Calculus',
-      topic: 'Integration by parts',
-      preferredTime: 'Today, 3:00 PM',
-      urgency: 'High',
-      rate: 45,
-      duration: '1 hour',
-      message: 'Hi! I need help understanding integration by parts for my upcoming exam. Can you help me work through some practice problems?'
-    },
-    {
-      id: 2,
-      student: 'Emma Davis',
-      avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100',
-      subject: 'Physics',
-      topic: 'Quantum mechanics basics',
-      preferredTime: 'Tomorrow, 10:00 AM',
-      urgency: 'Medium',
-      rate: 45,
-      duration: '45 minutes',
-      message: 'I\'m struggling with the basic concepts of quantum mechanics. Could you help explain wave functions and the uncertainty principle?'
-    },
-    {
-      id: 3,
-      student: 'Ryan Johnson',
-      avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100',
-      subject: 'Mathematics',
-      topic: 'Linear algebra',
-      preferredTime: 'This weekend',
-      urgency: 'Low',
-      rate: 45,
-      duration: '2 hours',
-      message: 'Looking for help with matrix operations and eigenvalues. I have a project due next week and want to make sure I understand the concepts well.'
-    }
-  ];
+  useEffect(() => {
+    fetchMentorSessions();
+    fetchMentorRequests();
+  }, [fetchMentorSessions, fetchMentorRequests]);
+
+ console.log("Accepted Sessions:", acceptedSessions);
+
+  // const helpRequests = [
+  //   {
+  //     id: 1,
+  //     student: 'Alex Thompson',
+  //     avatar: 'https://images.pexels.com/photos/1542085/pexels-photo-1542085.jpeg?auto=compress&cs=tinysrgb&w=100',
+  //     subject: 'Calculus',
+  //     topic: 'Integration by parts',
+  //     preferredTime: 'Today, 3:00 PM',
+  //     urgency: 'High',
+  //     rate: 45,
+  //     duration: '1 hour',
+  //     message: 'Hi! I need help understanding integration by parts for my upcoming exam. Can you help me work through some practice problems?'
+  //   },
+  //   {
+  //     id: 2,
+  //     student: 'Emma Davis',
+  //     avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100',
+  //     subject: 'Physics',
+  //     topic: 'Quantum mechanics basics',
+  //     preferredTime: 'Tomorrow, 10:00 AM',
+  //     urgency: 'Medium',
+  //     rate: 45,
+  //     duration: '45 minutes',
+  //     message: 'I\'m struggling with the basic concepts of quantum mechanics. Could you help explain wave functions and the uncertainty principle?'
+  //   },
+  //   {
+  //     id: 3,
+  //     student: 'Ryan Johnson',
+  //     avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100',
+  //     subject: 'Mathematics',
+  //     topic: 'Linear algebra',
+  //     preferredTime: 'This weekend',
+  //     urgency: 'Low',
+  //     rate: 45,
+  //     duration: '2 hours',
+  //     message: 'Looking for help with matrix operations and eigenvalues. I have a project due next week and want to make sure I understand the concepts well.'
+  //   }
+  // ];
 
   const upcomingSessions = [
     {
@@ -100,9 +109,24 @@ const MentorDashboard: React.FC = () => {
     }
   ];
 
-  const handleRequestAction = (requestId: number, action: 'accept' | 'decline') => {
+  const handleRequestAction = (requestId: string, action: 'accept' | 'decline') => {
     // Handle request acceptance/decline
     console.log(`${action} request ${requestId}`);
+    if (action === 'accept') {
+      updateSessionStatus(requestId, 'confirmed');
+    } else {
+      updateSessionStatus(requestId, 'declined');
+    }
+  };
+
+  const handleRequestAccept = (requestId: string) => {
+    acceptRequest(requestId);
+    updateSessionStatus(requestId, 'confirmed');
+  };
+
+  const handleRequestDecline = (requestId: string) => {
+    declineRequest(requestId);
+    updateSessionStatus(requestId, 'declined');
   };
 
   return (
@@ -141,9 +165,8 @@ const MentorDashboard: React.FC = () => {
                 <div className={`w-12 h-12 ${bgColor} rounded-lg flex items-center justify-center`}>
                   <Icon className={`w-6 h-6 ${color}`} />
                 </div>
-                <div className={`text-sm font-medium ${
-                  change.startsWith('+') ? 'text-green-600' : 'text-red-600'
-                }`}>
+                <div className={`text-sm font-medium ${change.startsWith('+') ? 'text-green-600' : 'text-red-600'
+                  }`}>
                   {change}
                 </div>
               </div>
@@ -168,26 +191,24 @@ const MentorDashboard: React.FC = () => {
             <nav className="-mb-px flex space-x-8">
               {[
                 { id: 'requests', label: 'Help Requests', count: helpRequests.length },
-                { id: 'sessions', label: 'Upcoming Sessions', count: upcomingSessions.length },
+                { id: 'sessions', label: 'Accepted Sessions', count: acceptedSessions.length },
                 { id: 'availability', label: 'Availability' },
                 { id: 'analytics', label: 'Analytics' }
               ].map(({ id, label, count }) => (
                 <button
                   key={id}
                   onClick={() => setActiveTab(id)}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap flex items-center space-x-2 ${
-                    activeTab === id
+                  className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap flex items-center space-x-2 ${activeTab === id
                       ? 'border-blue-500 text-blue-600 dark:text-blue-400'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                    }`}
                 >
                   <span>{label}</span>
                   {count !== undefined && (
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      activeTab === id
+                    <span className={`px-2 py-1 rounded-full text-xs ${activeTab === id
                         ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300'
                         : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
-                    }`}>
+                      }`}>
                       {count}
                     </span>
                   )}
@@ -212,7 +233,7 @@ const MentorDashboard: React.FC = () => {
                 </h3>
                 {helpRequests.map((request, index) => (
                   <motion.div
-                    key={request.id}
+                    key={request._id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
@@ -220,25 +241,19 @@ const MentorDashboard: React.FC = () => {
                   >
                     <div className="flex items-start space-x-4">
                       <img
-                        src={request.avatar}
-                        alt={request.student}
+                        src={request.studentId.profileImage || 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=100.placeholder.com/100'}
+                        alt={request.studentId.name}
                         className="w-12 h-12 rounded-full object-cover"
                       />
-                      
+
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-2">
                           <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                            {request.student}
+                            {request.studentId.name}
                           </h4>
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            request.urgency === 'High' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' :
-                            request.urgency === 'Medium' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300' :
-                            'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
-                          }`}>
-                            {request.urgency}
-                          </span>
+
                         </div>
-                        
+
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 text-sm text-gray-600 dark:text-gray-300">
                           <div>
                             <span className="font-medium">Subject:</span>
@@ -250,38 +265,38 @@ const MentorDashboard: React.FC = () => {
                           </div>
                           <div>
                             <span className="font-medium">Time:</span>
-                            <div>{request.preferredTime}</div>
+                            <div>{request.startTime}</div>
                           </div>
                           <div>
                             <span className="font-medium">Duration:</span>
-                            <div>{request.duration}</div>
+                            <div>{request.duration || "1 hr"}</div>
                           </div>
                         </div>
 
                         <p className="text-gray-700 dark:text-gray-300 mb-4 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-                          "{request.message}"
+                          "{request.message || "I need help with this topic."}"
                         </p>
 
                         <div className="flex items-center justify-between">
                           <div className="text-lg font-semibold text-green-600">
                             ${request.rate} ({request.duration})
                           </div>
-                          
+
                           <div className="flex space-x-3">
                             <motion.button
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
-                              onClick={() => handleRequestAction(request.id, 'decline')}
+                              onClick={() => handleRequestDecline(request._id)}
                               className="px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors flex items-center space-x-2"
                             >
                               <X className="w-4 h-4" />
                               <span>Decline</span>
                             </motion.button>
-                            
+
                             <motion.button
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
-                              onClick={() => handleRequestAction(request.id, 'accept')}
+                              onClick={() => handleRequestAccept(request._id)}
                               className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
                             >
                               <Check className="w-4 h-4" />
@@ -303,11 +318,11 @@ const MentorDashboard: React.FC = () => {
                 className="space-y-6"
               >
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Upcoming Sessions
+                  Accepted Session Requests
                 </h3>
-                {upcomingSessions.map((session, index) => (
+                {acceptedSessions.map((session, index) => (
                   <motion.div
-                    key={session.id}
+                    key={session._id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
@@ -316,19 +331,30 @@ const MentorDashboard: React.FC = () => {
                     <div className="flex items-center space-x-4">
                       <img
                         src={session.avatar}
-                        alt={session.student}
+                        alt={session.studentId.name}
                         className="w-12 h-12 rounded-full object-cover"
                       />
-                      
+
                       <div className="flex-1">
                         <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                          {session.student}
+                          {session.studentId.name}
                         </h4>
                         <div className="text-sm text-gray-600 dark:text-gray-300 mb-2">
                           {session.subject} • {session.time} • {session.duration}
                         </div>
                       </div>
-                      
+
+                      <div className="flex space-x-3">
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
+                        >
+                          <VideoIcon className="w-4 h-4" />
+                          <span>Call</span>
+                        </motion.button>
+                      </div>
+
                       <div className="flex space-x-3">
                         <motion.button
                           whileHover={{ scale: 1.05 }}

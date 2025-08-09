@@ -90,6 +90,11 @@ export const useAppStore = create<AppState & AppActions>()(
                 try {
                     const res = await axiosInstance.post("/user/login", data);
                     set({ user: res.data.user, isAuthenticated: true });
+                    if (res.data.user.role === "student") {
+                        window.location.href = "/student/dashboard";
+                    } else if (res.data.user.role === "mentor") {
+                        window.location.href = "/mentor/dashboard";
+                    }
                     toast.success("Logged in successfully");
                 } catch (error: any) {
                     toast.error(error?.response?.data?.message || "Login failed");

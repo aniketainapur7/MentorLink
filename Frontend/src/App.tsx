@@ -47,7 +47,7 @@
 //               transition={{ duration: 0.3 }}
 //             >
 //               <Navbar />
-              
+
 //               {currentPage === 'hero' && (
 //                 <motion.div
 //                   key="hero"
@@ -58,7 +58,7 @@
 //                 >
 //                   <Hero />
 //                   <div className="text-center pb-16">
-                    
+
 //                   </div>
 //                 </motion.div>
 //               )}
@@ -125,7 +125,7 @@
 
 
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useParams } from "react-router-dom";
-import { useAppStore } from "./context/AuthStore";
+import { useAppStore } from "./stores/AuthStore";
 import Navbar from "./components/Navbar";
 import Loading from "./components/Loading";
 import Hero from "./components/Hero";
@@ -134,6 +134,14 @@ import AuthForm from "./components/AuthForm";
 import StudentDashboard from "./components/StudentDashboard";
 import MentorDashboard from "./components/MentorDashboard";
 import QuickConnect from "./components/QuickConnect";
+import { Toaster } from "react-hot-toast";
+import MentorLayout from "./layouts/MentorLayout";
+import StudentLayout from "./layouts/StudentLayout";
+import FindMentors from "./pages/student/FindMentors";
+import StudentSessions from "./pages/student/StudentSessions";
+import MentorStudents from "./pages/mentor/MentorStudents";
+import { useEffect } from "react";
+
 
 // Wrapper so RoleSelection gets the right props
 function RoleSelectionWrapper() {
@@ -158,42 +166,150 @@ function AuthFormWrapper() {
   return <AuthForm role={role} onBack={handleBack} />;
 }
 
-function AppRoutes() {
+// Placeholder components for other pages
+const StudentMessages = () => (
+  <div className="p-6">
+    <h2 className="text-2xl font-bold">Student Messages</h2>
+    <p>Messages functionality coming soon...</p>
+  </div>
+)
+const StudentMaterials = () => (
+  <div className="p-6">
+    <h2 className="text-2xl font-bold">Study Materials</h2>
+    <p>Study materials functionality coming soon...</p>
+  </div>
+)
+const StudentReviews = () => (
+  <div className="p-6">
+    <h2 className="text-2xl font-bold">Reviews</h2>
+    <p>Reviews functionality coming soon...</p>
+  </div>
+)
+const StudentProfile = () => (
+  <div className="p-6">
+    <h2 className="text-2xl font-bold">Student Profile</h2>
+    <p>Profile settings coming soon...</p>
+  </div>
+)
+const StudentSettings = () => (
+  <div className="p-6">
+    <h2 className="text-2xl font-bold">Settings</h2>
+    <p>Settings functionality coming soon...</p>
+  </div>
+)
+
+const MentorSchedule = () => (
+  <div className="p-6">
+    <h2 className="text-2xl font-bold">Schedule</h2>
+    <p>Schedule management coming soon...</p>
+  </div>
+)
+const MentorMessages = () => (
+  <div className="p-6">
+    <h2 className="text-2xl font-bold">Mentor Messages</h2>
+    <p>Messages functionality coming soon...</p>
+  </div>
+)
+const MentorHistory = () => (
+  <div className="p-6">
+    <h2 className="text-2xl font-bold">Session History</h2>
+    <p>Session history coming soon...</p>
+  </div>
+)
+const MentorAnalytics = () => (
+  <div className="p-6">
+    <h2 className="text-2xl font-bold">Analytics</h2>
+    <p>Analytics dashboard coming soon...</p>
+  </div>
+)
+const MentorEarnings = () => (
+  <div className="p-6">
+    <h2 className="text-2xl font-bold">Earnings</h2>
+    <p>Earnings tracking coming soon...</p>
+  </div>
+)
+const MentorProfile = () => (
+  <div className="p-6">
+    <h2 className="text-2xl font-bold">Mentor Profile</h2>
+    <p>Profile settings coming soon...</p>
+  </div>
+)
+const MentorSettings = () => (
+  <div className="p-6">
+    <h2 className="text-2xl font-bold">Settings</h2>
+    <p>Settings functionality coming soon...</p>
+  </div>
+)
+
+const App: React.FC = () => {
   const { isAuthenticated, loading, user } = useAppStore();
+  const navigate = useNavigate();
+
+  //   useEffect(() => {
+  //   if (!loading && isAuthenticated && user) {
+  //     if (user.role === "student") {
+  //       navigate("/student/dashboard", { replace: true });
+  //     } else if (user.role === "mentor") {
+  //       navigate("/mentor/dashboard", { replace: true });
+  //     }
+  //   }
+  // }, [loading, isAuthenticated, user, navigate]);
 
   if (loading) return <Loading />;
 
+
   return (
-    <>
-      <Navbar />
-      <Routes>
-        {!isAuthenticated ? (
-          <>
-            <Route path="/" element={<Hero />} />
-            <Route path="/role-selection" element={<RoleSelectionWrapper />} />
-            <Route path="/auth/:role" element={<AuthFormWrapper />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </>
-        ) : (
-          <>
-            {user?.role === "student" ? (
-              <Route path="/dashboard" element={<StudentDashboard />} />
-            ) : (
-              <Route path="/dashboard" element={<MentorDashboard />} />
-            )}
-            <Route path="/quick-connect" element={<QuickConnect />} />
-            <Route path="*" element={<Navigate to="/dashboard" />} />
-          </>
-        )}
-      </Routes>
-    </>
-  );
+
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <Toaster/>
+        <Routes>
+          {!isAuthenticated ? (
+            <>
+              <Route path="/" element={<Hero />} />
+              <Route path="/role-selection" element={<RoleSelectionWrapper />} />
+              <Route path="/auth/:role" element={<AuthFormWrapper />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </>
+          ) : (
+            <>
+              {user?.role === "student" ? (
+                <Route path="/student" element={<StudentLayout />}>
+                  <Route index element={<Navigate to="/student/dashboard" replace />} />
+                  <Route path="dashboard" element={<StudentDashboard />} />
+                  <Route path="find-mentors" element={<FindMentors />} />
+                  <Route path="sessions" element={<StudentSessions />} />
+                  <Route path="messages" element={<StudentMessages />} />
+                  <Route path="materials" element={<StudentMaterials />} />
+                  <Route path="reviews" element={<StudentReviews />} />
+                  <Route path="profile" element={<StudentProfile />} />
+                  <Route path="settings" element={<StudentSettings />} />
+                </Route>
+              ) : (
+                <Route path="/mentor" element={<MentorLayout />}>
+                  <Route index element={<Navigate to="/mentor/dashboard" replace />} />
+                  <Route path="dashboard" element={<MentorDashboard />} />
+                  <Route path="students" element={<MentorStudents />} />
+                  <Route path="schedule" element={<MentorSchedule />} />
+                  <Route path="messages" element={<MentorMessages />} />
+                  <Route path="history" element={<MentorHistory />} />
+                  <Route path="analytics" element={<MentorAnalytics />} />
+                  <Route path="earnings" element={<MentorEarnings />} />
+                  <Route path="profile" element={<MentorProfile />} />
+                  <Route path="settings" element={<MentorSettings />} />
+                </Route>
+              )}
+              <Route path="/quick-connect" element={<QuickConnect />} />
+              {/* <Route path="*" element={<Navigate to="/dashboard" />} /> */}
+            </>
+          )}
+
+          {/* Catch all route */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+
+      </div>
+  )
 }
 
-export default function App() {
-  return (
-    <Router>
-      <AppRoutes />
-    </Router>
-  );
-}
+export default App
+

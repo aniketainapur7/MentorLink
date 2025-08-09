@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, User, Github } from 'lucide-react';
-import { useAppStore } from '../context/AuthStore';
+import { useAppStore } from '../stores/AuthStore';
 import toast from 'react-hot-toast';
-import { sign } from 'crypto';
-import { sub } from 'framer-motion/client';
+// import { sign } from 'crypto';
+// import { sub } from 'framer-motion/client';
 import SubjectsInput from './SubjectsInput';
-import AvailableDaysInput from './AvailableDaysInput';
+// import AvailableDaysInput from './AvailableDaysInput';
 
 
 interface AuthFormProps {
@@ -15,7 +15,7 @@ interface AuthFormProps {
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({ role, onBack }) => {
-  const { setUser, login, signup } = useAppStore();
+  const { login, signup } = useAppStore();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -65,8 +65,14 @@ const AuthForm: React.FC<AuthFormProps> = ({ role, onBack }) => {
       gradient: 'from-purple-500 to-pink-500'
     }
   };
-
-  const config = roleConfig[role];
+  let config = roleConfig.student;
+  if(role === 'student') {
+    config = roleConfig.student;
+  } else if(role === 'mentor') {
+    config = roleConfig.mentor;
+  }
+  ;
+  // const config = roleConfig[role];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-purple-900 flex items-center justify-center p-4">

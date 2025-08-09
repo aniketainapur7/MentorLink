@@ -1,0 +1,198 @@
+"use client"
+
+import type React from "react"
+import { useState } from "react"
+import { motion } from "framer-motion"
+import { Search, Star, Filter, MapPin, Clock, DollarSign } from "lucide-react"
+
+const FindMentors: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedSubject, setSelectedSubject] = useState("all")
+
+  const mentors = [
+    {
+      id: 1,
+      name: "Dr. Sarah Johnson",
+      subject: "Mathematics",
+      rating: 4.9,
+      reviews: 127,
+      hourlyRate: 45,
+      location: "New York, NY",
+      availability: "Available now",
+      image: "/placeholder.svg?height=80&width=80",
+      specialties: ["Calculus", "Algebra", "Statistics"],
+    },
+    {
+      id: 2,
+      name: "Prof. Mike Chen",
+      subject: "Physics",
+      rating: 4.8,
+      reviews: 89,
+      hourlyRate: 50,
+      location: "San Francisco, CA",
+      availability: "Available in 2 hours",
+      image: "/placeholder.svg?height=80&width=80",
+      specialties: ["Quantum Physics", "Mechanics", "Thermodynamics"],
+    },
+    {
+      id: 3,
+      name: "Dr. Emily Davis",
+      subject: "Chemistry",
+      rating: 4.7,
+      reviews: 156,
+      hourlyRate: 40,
+      location: "Boston, MA",
+      availability: "Available tomorrow",
+      image: "/placeholder.svg?height=80&width=80",
+      specialties: ["Organic Chemistry", "Biochemistry", "Lab Techniques"],
+    },
+    {
+      id: 4,
+      name: "Dr. John Smith",
+      subject: "Biology",
+      rating: 4.9,
+      reviews: 203,
+      hourlyRate: 42,
+      location: "Chicago, IL",
+      availability: "Available now",
+      image: "/placeholder.svg?height=80&width=80",
+      specialties: ["Molecular Biology", "Genetics", "Cell Biology"],
+    },
+  ]
+
+  const subjects = ["all", "Mathematics", "Physics", "Chemistry", "Biology", "Computer Science", "English"]
+
+  const filteredMentors = mentors.filter((mentor) => {
+    const matchesSearch =
+      mentor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      mentor.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      mentor.specialties.some((specialty) => specialty.toLowerCase().includes(searchQuery.toLowerCase()))
+    const matchesSubject = selectedSubject === "all" || mentor.subject === selectedSubject
+    return matchesSearch && matchesSubject
+  })
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Find Your Perfect Mentor</h2>
+        <p className="text-gray-600 dark:text-gray-400">Connect with expert mentors in your subject area</p>
+      </div>
+
+      {/* Search and Filters */}
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="flex flex-col lg:flex-row gap-4">
+          {/* Search Bar */}
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Search mentors, subjects, or specialties..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+
+          {/* Subject Filter */}
+          <div className="flex items-center gap-2">
+            <Filter className="w-5 h-5 text-gray-400" />
+            <select
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+              className="px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              {subjects.map((subject) => (
+                <option key={subject} value={subject}>
+                  {subject === "all" ? "All Subjects" : subject}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Mentors Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {filteredMentors.map((mentor, index) => (
+          <motion.div
+            key={mentor.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
+          >
+            <div className="flex items-start gap-4">
+              <img
+                src={mentor.image || "/placeholder.svg"}
+                alt={mentor.name}
+                className="w-20 h-20 rounded-full object-cover"
+              />
+              <div className="flex-1">
+                <div className="flex items-start justify-between mb-2">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{mentor.name}</h3>
+                    <p className="text-blue-600 dark:text-blue-400 font-medium">{mentor.subject}</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                      <span className="text-sm font-medium">{mentor.rating}</span>
+                      <span className="text-xs text-gray-500">({mentor.reviews})</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <MapPin className="w-4 h-4" />
+                    <span>{mentor.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <Clock className="w-4 h-4" />
+                    <span>{mentor.availability}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <DollarSign className="w-4 h-4" />
+                    <span>${mentor.hourlyRate}/hour</span>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Specialties:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {mentor.specialties.map((specialty) => (
+                      <span
+                        key={specialty}
+                        className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded-full"
+                      >
+                        {specialty}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <button className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    Book Session
+                  </button>
+                  <button className="px-4 py-2 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    View Profile
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {filteredMentors.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-gray-500 dark:text-gray-400">No mentors found matching your criteria.</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default FindMentors
