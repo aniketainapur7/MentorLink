@@ -19,4 +19,5 @@ router.post("/session/:id/rate", verifyjwt, rateSession);         // rate the se
 router.get("/session/:id", verifyjwt, getSessionDetails);         // get each sessions details 
 router.delete("/session/:id/cancel", verifyjwt, cancelSession);   // cancel requested session 
 
+
 module.exports = router;

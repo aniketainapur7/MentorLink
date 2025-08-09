@@ -68,10 +68,23 @@ const getSessions = async (req, res) => {
     const studentId = req.user._id;
 
     const sessions = await Session.find({ studentId })
-      .populate("mentorId", "name subjects profileImage rating")
+      .populate("mentorId", "name subjects profileImage rating") // mentor info
+      .populate("studentId", "name") // so we can return studentName
       .sort({ createdAt: -1 });
 
-    res.status(200).json({ sessions });
+    // Map to StudentSession format
+    const formattedSessions = sessions.map(s => ({
+      _id: s._id.toString(),
+      studentName: s.studentId?.name || "Unknown",
+      studentId: s.studentId?._id.toString(),
+      mentorId: s.mentorId, 
+      meetingurl: s.meetingurl,
+      subject: s.subject,
+      startTime: s.startTime ? s.startTime.toISOString() : null,
+      status: s.status
+    }));
+
+    res.status(200).json({ sessions: formattedSessions });
   } catch (error) {
     console.error("Error in getSessions:", error.message);
     res.status(500).json({ message: "Internal server error" });

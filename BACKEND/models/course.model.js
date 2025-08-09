@@ -4,7 +4,7 @@ const LessonSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
   type: { type: String, enum: ['video', 'pdf', 'text'], required: true },
   url: { type: String, required: true },
-  durationMinutes: { type: Number } // optional, for videos
+  durationMinutes: { type: Number }
 }, { _id: false });
 
 const CourseSchema = new mongoose.Schema({
